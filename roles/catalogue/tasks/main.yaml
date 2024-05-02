@@ -1,0 +1,32 @@
+- name: nodejs setup
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: nodejs-setup
+
+- name: copying catalogue.service
+  ansible.builtin.copy:
+    src: catalogue.service 
+    dest: /etc/systemd/system/catalogue.service  
+
+- name: loading daemon
+  ansible.builtin.systemd_service:
+    daemon_reload: yes  
+
+- name: enabling and starting the catalogue
+  ansible.builtin.service:
+    name: catalogue
+    enabled: yes
+    state: started  
+
+- name: copying mongo.repo
+  ansible.builtin.copy:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: installing mongodb-org
+  ansible.builtin.yum:
+    name: mongodb-org-shell
+    state: installed
+
+- name: loading schemas
+  ansible.builtin.shell: mongo --host 3.91.7.178 </app/schema/catalogue.js 

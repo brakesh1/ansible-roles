@@ -1,0 +1,28 @@
+- name: nodejs setup
+  ansible.builtin.yum: curl -sL https://rpm.nodesource.com/setup_lts.x | bash
+
+- name: installing nodejs
+  ansible.builtin.yum:
+    name: nodejs
+    state: installed
+
+- name: adding user robosop
+  ansible.builtin.user:
+    name: roboshop
+    state: present
+
+- name: Creating app directory
+  ansible.builtin.file:
+    path: /app
+    state: present
+
+- name: downloading and unzipping articraft
+  ansible.builtin.unarchive:
+    src: https://roboshop-builds.s3.amazonaws.com/catalogue.zip
+    dest: /app
+    remote_src: yes              
+
+- name: installing npm
+  ansible.builtin.shell: npm install
+  args:
+    chdir: /app
