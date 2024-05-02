@@ -14,7 +14,7 @@
 - name: Creating app directory
   ansible.builtin.file:
     path: /app
-    state: present
+    state: directory
 
 - name: downloading and unzipping articraft
   ansible.builtin.unarchive:
