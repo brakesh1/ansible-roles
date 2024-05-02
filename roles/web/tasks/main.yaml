@@ -21,11 +21,8 @@
     remote_src: yes  
 
 - name: Copying roboshop
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: roboshop.conf
-    dest: /etc/nginx/default.d/roboshop.conf  
-
-- name: restarting nginx
-  ansible.builtin.service:
-    name: nginx
-    state: restarted
+    dest: /etc/nginx/default.d/roboshop.conf 
+  notify: 
+  - restarting nginx   
